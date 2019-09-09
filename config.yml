@@ -5,6 +5,8 @@
 tickrate: 2 #checks per second
 mode: "cli" #cli / AlOg / (web)
 
+disk_usage_fs: "/"
+
 modules:
   enabled:
     - "cpu_stat"

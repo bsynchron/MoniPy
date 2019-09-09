@@ -8,7 +8,7 @@ if "-h" in sys.argv:
 #Make config avaliable in monitor and alarm
 def loadConf():
     f=open("config.yml", "r")
-    cfg = yaml.load(f.read(), Loader=yaml.CLoader)
+    cfg = yaml.load(f.read())
     f.close()
     return cfg
 
@@ -38,7 +38,7 @@ def getStat(stat):
         elif stat == "disk_IO":
             return psutil.disk_io_counters()
         elif stat == "disk_space":
-            return psutil.disk_usage("C:/")[3]
+            return psutil.disk_usage(cfg['disk_usage_fs'])[3]
         elif stat == "network_io":
             return psutil.net_io_counters()
         elif stat == "network_io":
