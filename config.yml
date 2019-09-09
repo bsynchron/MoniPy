@@ -1,0 +1,123 @@
+---
+################################
+# Monitoring
+
+tickrate: 2 #checks per second
+mode: "cli" #cli / AlOg / (web)
+
+modules:
+  enabled:
+    - "cpu_stat"
+    - "cpu_util"
+    - "cpu_clock"
+    - "mem_stat"
+    - "disk_io"
+    - "disk_space"
+    - "processes"
+  disabled:
+    - "network_io"
+    - "network_nic"
+
+logging:
+  status: true
+
+# Monitoring
+################################
+# Alarm triggers
+
+alarming: true
+trigger:
+  soft_cap:
+    - cpu_stat: false
+      value: 0
+      time: 0
+      mail: false
+      log: false
+    - cpu_util: true
+      value: 50
+      time: 10
+      mail: false
+      log: true
+    - cpu_clock: false
+      value: 0
+      time: 0
+      mail: false
+      log: false
+    - mem_stat: false
+      value: 0
+      time: 0
+      mail: false
+      log: false
+    - disk_io: false
+      value: 0
+      time: 0
+      mail: false
+      log: false
+    - disk_space: true
+      value: 80
+      time: 600
+      mail: false
+      log: false
+    - processes: true
+      value: 200
+      time: 60
+      mail: false
+      log: true
+    - network_io: false
+      value: 0
+      time: 0
+      mail: false
+      log: false
+    - network_nic: false
+      value: 0
+      time: 0
+      mail: false
+      log: false
+  hard_cap:
+    - cpu_stat: false
+      value: 0
+      mail: false
+      log: false
+    - cpu_util: true
+      value: 90
+      mail: false
+      log: true
+    - cpu_clock: false
+      value: 0
+      mail: false
+      log: false
+    - mem_stat: false
+      value: 0
+      mail: false
+      log: false
+    - disk_io: false
+      value: 0
+      mail: false
+      log: false
+    - disk_space: false
+      value: 0
+      mail: false
+      log: false
+    - processes: true
+      value: 500
+      mail: false
+      log: true
+    - network_io: false
+      value: 0
+      mail: false
+      log: false
+    - network_nic: false
+      value: 0
+      mail: false
+      log: false
+
+# Alarm triggers
+################################
+# eMail options
+
+smtp:
+  username: "florian.patzwall@gmail.com"
+  password: "gxdiczlmazngrcbi"
+  smtp_server: "smtp.gmail.com"
+  port: 587
+  mailTo: "florian.patzwall@gmail.com"
