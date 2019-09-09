@@ -83,6 +83,8 @@ def checkStat(values):
                             log(time.time(), stat, values[stat], trigger_value, "ALARM")
                         if cfg['trigger']['soft_cap'][i]['mail'] == True:
                             mailAlarm(stat, values[stat], trigger_value)
+                        #remove entry from timekeeping storage (reset timer)
+                        del times[stat]
                 #stat not in times
                 else:
                     #create entry in times (starting timestamp)
