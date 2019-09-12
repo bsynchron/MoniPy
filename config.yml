@@ -62,7 +62,7 @@ trigger:
       log: false
     - processes: true
       value: 200
-      time: 60
+      time: 10
       mail: false
       log: true
     - network_io: false
@@ -123,3 +123,16 @@ smtp:
   smtp_server: "smtp.gmail.com"
   port: 587
   mailTo: "florian.patzwall@gmail.com"
+
+# eMail options
+################################
+# timeseries database
+
+timeseries: true
+
+db:
+  database: "MoniPy"
+  username: "root"
+  password: "root"
+  host: "localhost"
+  port: 8086
