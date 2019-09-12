@@ -1,14 +1,17 @@
 from influxdb import InfluxDBClient
-import yaml, time
+import yaml, datetime, socket, json
 
 clientSet = False
+hostname = socket.gethostname()
 
 def setConf(conf):
-    if conf['timeseries'] == False:
+    if conf['timeseries']['alarming'] == True or conf['timeseries']['logging'] == True:
+        global cfg
+        cfg = conf
+    else:
         print("Timeseries is disabled! -> config.yml")
         return False
-    global cfg
-    cfg = conf
+
 
 def connectToDB():
     global clientSet
@@ -21,25 +24,47 @@ def connectToDB():
 def createDB(database):
     dbClient.create_database(database)
 
-def insertData(data):
-    timestamp = time.time()
-    json_data='['
-    for i in data:
-        print(i)
-        #https://www.influxdata.com/blog/getting-started-python-influxdb/
-        json_data+=f"{{}}"
-
-    json_data+=']'
+def insertData(data, stat=None):
+    json_data=''
+    timestamp = datetime.datetime.now()
+    if stat!=None:
+        json_data+= '[{'
+        json_data+=f'   "measurement": "{stat}",'
+        json_data+= '   "tags": {'
+        json_data+=f'       "host": "{hostname}"'
+        json_data+= '   },'
+        json_data+=f'   "time": "{timestamp}",'
+        json_data+= '   "fields": {'
+        json_data+=f'       "value": "{data[stat]}",'
+        json_data+=f'       "state": "ALARM"'
+        json_data+= '   }'
+        json_data+= '}'
+        json_data+= ']'
+    else:
+        keys = []
+        for key in data:
+            keys += [key]
+        for i in data:
+            json_data+= '[{'
+            json_data+=f'   "measurement": "{i}",'
+            json_data+= '   "tags": {'
+            json_data+=f'       "host": "{hostname}",'
+            json_data+=f'       "state": "INFO"'
+            json_data+= '   },'
+            json_data+=f'   "time": "{timestamp}",'
+            json_data+= '   "fields": {'
+            json_data+=f'       "value": "{data[i]}",'
+            json_data+=f'       "state": "INFO"'
+            json_data+= '   }'
+            if i == keys[-1]:
+                json_data+= '}'
+            else:
+                json_data+= '},'
+            json_data+=']'
+    json_data = json.loads(json_data)
+    print(json_data)
     if clientSet == True:
-        dbClient.write_points(data)
+        dbClient.write_points(json_data)
     else:
         connectToDB()
-        dbClient.write_points(data)
-
-# f = open("config.yml", "r")
-# conf = f.read()
-# cfg = yaml.load(conf)
-# f.close()
-#
-# connectToDB()
-# print("Connected!")
+        dbClient.write_points(json_data)
