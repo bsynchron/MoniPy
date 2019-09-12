@@ -1,7 +1,16 @@
 import psutil, alarm, yaml, json, time, os, sys
 
 if "-h" in sys.argv:
-    print("helptext")
+    print("\n--- Python Monitoring ---")
+    print("Author: Florian Patzwall\n")
+    print("Everything is configured inside of config.yml\n")
+    print("This script is able to:")
+    print(" 1. Display current system information")
+    print(" 2. Setup alarming with predefined values (config.yml)")
+    print(" 3. Visually alert the user looking at the script")
+    print(" 4. Only be run as singe module (Monitor/Alarm/Timeseries)")
+    print(" 5. Insert current / alarming data into a timeseries database")
+    print(" 6. Notify user about alarms via eMail\n")
     sys.exit(0)
 
 #######################
@@ -61,5 +70,7 @@ while True:
     #pass values to alarming
     alarm.checkStat(values)
     alarm.dprint("#"*10)
+    ts_stat = stat
+    alarm.timeseries.insertData(values, ts_stat)
     #define "framerate"
     time.sleep(1/cfg['tickrate'])
