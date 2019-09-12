@@ -128,7 +128,10 @@ smtp:
 ################################
 # timeseries database
 
-timeseries: true
+timeseries:
+  alarming: true
+  logging: true
+  refreshrate: 5
 
 db:
   database: "MoniPy"
