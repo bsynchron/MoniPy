@@ -32,9 +32,9 @@ def startAlarm(stat, values, trigger_value, cap):
     if cfg['alarming'] == False:
         return False
     dprint(f"ALARM: {stat} has {values[stat]}/{trigger_value} ({cap})")
-    if cfg['timeseries'] == True:
+    if cfg['timeseries']['alarming'] == True:
         #insert data into influxdb
-        timeseries.insertData(values)
+        timeseries.insertData(values, stat)
 
 def setConf(conf):
     timeseries.setConf(conf)
