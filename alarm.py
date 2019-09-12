@@ -1,4 +1,4 @@
-import smtplib, yaml, time, datetime, socket
+import smtplib, yaml, time, datetime, socket, timeseries, json
 
 
 times = {} #Persistent timekeeping storage
@@ -28,12 +28,19 @@ def mailAlarm(stat, value, trigger):
 
     dprint("Sent mail")
 
-def startAlarm(stat, value, trigger_value, cap):
+def startAlarm(stat, values, trigger_value, cap):
     if cfg['alarming'] == False:
         return False
-    dprint(f"ALARM: {stat} has {value}/{trigger_value} ({cap})")
+    dprint(f"ALARM: {stat} has {values[stat]}/{trigger_value} ({cap})")
+    if cfg['timeseries'] == True:
+        #insert data into influxdb
+        timeseries.insertData(values)
 
 def setConf(conf):
+    timeseries.setConf(conf)
+    if conf['alarming'] == False:
+        print("Alarming not enabled! -> config.yml")
+        return False
     global cfg
     cfg = conf
 
@@ -55,7 +62,7 @@ def checkStat(values):
                 if cfg['trigger']['hard_cap'][i]['log'] == True:
                     log(time.time(), stat, values[stat], trigger_value, "ALARM")
                 #send alarm to cli
-                startAlarm(stat, values[stat], trigger_value, "HARD_CAP")
+                startAlarm(stat, values, trigger_value, "HARD_CAP")
                 #check if mail is enabled for stat trigger
                 if cfg['trigger']['hard_cap'][i]['mail'] == True:
                     mailAlarm(stat, values[stat], trigger_value)
@@ -78,7 +85,7 @@ def checkStat(values):
                         log(time.time(), stat, values[stat], trigger_value, "INFO")
                     #compare current time to saved timestamp + softcap_time
                     if time.time() >= (times[stat] + cfg['trigger']['soft_cap'][i]['time']):
-                        startAlarm(stat, values[stat], trigger_value, "SOFT_CAP")
+                        startAlarm(stat, values, trigger_value, "SOFT_CAP")
                         if cfg['trigger']['soft_cap'][i]['log'] == True:
                             log(time.time(), stat, values[stat], trigger_value, "ALARM")
                         if cfg['trigger']['soft_cap'][i]['mail'] == True:
