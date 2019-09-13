@@ -1,4 +1,4 @@
-import psutil, alarm, yaml, json, time, os, sys
+import psutil, alarm, yaml, json, time, os, sys, signal
 
 if "-h" in sys.argv:
     print("\n--- Python Monitoring ---")
@@ -12,6 +12,13 @@ if "-h" in sys.argv:
     print(" 5. Insert current / alarming data into a timeseries database")
     print(" 6. Notify user about alarms via eMail\n")
     sys.exit(0)
+
+def signal_handler(sig, frame):
+        print("\n\nStopped")
+        time.sleep(1)
+        cls()
+        sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
 
 #######################
 #Make config avaliable in monitor and alarm
