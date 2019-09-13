@@ -13,11 +13,13 @@ if "-h" in sys.argv:
     print(" 6. Notify user about alarms via eMail\n")
     sys.exit(0)
 
+#create "graceful" exit (CTRL + C)
 def signal_handler(sig, frame):
         print("\n\nStopped")
         time.sleep(1)
         cls()
         sys.exit(0)
+#register exit handler
 signal.signal(signal.SIGINT, signal_handler)
 
 #######################
