@@ -57,6 +57,8 @@ def getStat(stat):
         elif stat == "cpu_clock":
             return psutil.cpu_freq()
 
+timestamp_logging=time.time()
+
 #Main loop
 while True:
     if cfg['mode'] == 'cli': cls()
@@ -71,6 +73,9 @@ while True:
     alarm.checkStat(values)
     alarm.dprint("#"*10)
     ts_stat = stat
-    alarm.timeseries.insertData(values, ts_stat)
+    if cfg['timeseries']['logging'] == True:
+        if time.time() >= timestamp_logging + cfg['timeseries']['refreshrate']:
+            alarm.timeseries.insertData(values)
+            timestamp_logging=time.time()
     #define "framerate"
     time.sleep(1/cfg['tickrate'])
