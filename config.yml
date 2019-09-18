@@ -139,3 +139,12 @@ db:
   password: "root"
   host: "localhost"
   port: 8086
+
+# timeseries database
+################################
+# slack
+
+slack:
+  enabled: true
+  api-key: "xoxb-637594900402-764424909765-va8LVXzFXlc2CW0ioyoxBEmA"
+  channel: "#monitoring"
