@@ -1,4 +1,5 @@
-import smtplib, yaml, time, datetime, socket, timeseries, json
+import smtplib, yaml, time, datetime, socket, json
+import timeseries, slack_connector
 
 
 times = {} #Persistent timekeeping storage
@@ -35,9 +36,12 @@ def startAlarm(stat, values, trigger_value, cap):
     if cfg['timeseries']['alarming'] == True:
         #insert data into influxdb
         timeseries.insertData(values, stat)
+    if cfg['slack']['enabled'] == True:
+        slack_connector.sendMsg(stat, values[stat], trigger_value, cap)
 
 def setConf(conf):
     timeseries.setConf(conf)
+    slack_connector.setConf(conf)
     if conf['alarming'] == False:
         print("Alarming not enabled! -> config.yml")
         return False
