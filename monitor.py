@@ -66,6 +66,7 @@ def getStat(stat):
         elif stat == "cpu_clock":
             return psutil.cpu_freq()
 
+#init logging timestamp
 timestamp_logging=time.time()
 
 #Main loop
