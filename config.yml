@@ -30,88 +30,125 @@ logging:
 alarming: true
 trigger:
   soft_cap:
+
     - cpu_stat: false
       value: 0
       time: 0
       mail: false
       log: false
+      slack: false
+
     - cpu_util: true
       value: 50
       time: 10
       mail: false
       log: true
+      slack: false
+
     - cpu_clock: false
       value: 0
       time: 0
       mail: false
       log: false
+      slack: false
+
     - mem_stat: false
       value: 0
       time: 0
       mail: false
       log: false
+      slack: false
+
     - disk_io: false
       value: 0
       time: 0
       mail: false
       log: false
+      slack: false
+
     - disk_space: true
       value: 80
       time: 600
       mail: false
       log: false
+      slack: false
+
     - processes: true
       value: 200
       time: 10
       mail: false
       log: true
+      slack: true
+
     - network_io: false
       value: 0
       time: 0
       mail: false
       log: false
+      slack: false
+
     - network_nic: false
       value: 0
       time: 0
       mail: false
       log: false
+      slack: false
+##############################################################################################
   hard_cap:
+
     - cpu_stat: false
       value: 0
       mail: false
       log: false
+      slack: false
+
     - cpu_util: true
       value: 90
       mail: false
       log: true
+      slack: true
+
     - cpu_clock: false
       value: 0
       mail: false
       log: false
+      slack: false
+
     - mem_stat: false
       value: 0
       mail: false
       log: false
+      slack: false
+
     - disk_io: false
       value: 0
       mail: false
       log: false
+      slack: false
+
     - disk_space: false
       value: 0
       mail: false
       log: false
+      slack: false
+
     - processes: true
       value: 500
       mail: false
       log: true
+      slack: false
+
     - network_io: false
       value: 0
       mail: false
       log: false
+      slack: false
+
     - network_nic: false
       value: 0
       mail: false
       log: false
+      slack: false
 
 # Alarm triggers
 ################################
