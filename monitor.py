@@ -1,5 +1,6 @@
 import psutil, alarm, yaml, json, time, os, sys, signal
 
+#check parameters
 if "-h" in sys.argv:
     print("\n--- Python Monitoring ---")
     print("Author: Florian Patzwall\n")
@@ -30,6 +31,7 @@ def loadConf():
     f.close()
     return cfg
 
+#clear screen function for linux & windows
 def cls():os.system('cls' if os.name=='nt' else 'clear')
 cfg = loadConf()
 alarm.setConf(cfg)
@@ -87,5 +89,5 @@ while True:
         if time.time() >= timestamp_logging + cfg['timeseries']['refreshrate']:
             alarm.timeseries.insertData(values)
             timestamp_logging=time.time()
-    #define "framerate"
+    #define "tickrate"
     time.sleep(1/cfg['tickrate'])
