@@ -36,6 +36,8 @@ def startAlarm(stat, values, trigger_value, cap):
     if cfg['timeseries']['alarming'] == True:
         #insert data into influxdb
         timeseries.insertData(values, stat)
+
+def slackAlarm(stat, values, trigger_value, cap):
     if cfg['slack']['enabled'] == True:
         slack_connector.sendMsg(stat, values[stat], trigger_value, cap)
 
@@ -70,6 +72,8 @@ def checkStat(values):
                 #check if mail is enabled for stat trigger
                 if cfg['trigger']['hard_cap'][i]['mail'] == True:
                     mailAlarm(stat, values[stat], trigger_value)
+                if cfg['trigger']['hard_cap'][i]['slack'] == True:
+                    slackAlarm(stat, values, trigger_value, "HARD_CAP")
     #soft cap / use global times (persistent storage)
     global times
     #loop over soft_cap in config
@@ -94,6 +98,8 @@ def checkStat(values):
                             log(time.time(), stat, values[stat], trigger_value, "ALARM")
                         if cfg['trigger']['soft_cap'][i]['mail'] == True:
                             mailAlarm(stat, values[stat], trigger_value)
+                        if cfg['trigger']['soft_cap'][i]['slack'] == True:
+                            slackAlarm(stat, values, trigger_value, "SOFT_CAP")
                         #remove entry from timekeeping storage (reset timer)
                         del times[stat]
                 #stat not in times
