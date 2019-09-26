@@ -74,7 +74,7 @@ trigger:
       slack: false
 
     - processes: true
-      value: 200
+      value: 100
       time: 10
       mail: false
       log: true
@@ -156,7 +156,7 @@ trigger:
 
 smtp:
   username: "florian.patzwall@gmail.com"
-  password: "gxdiczlmazngrcbi"
+  password: "REMOVED"
   smtp_server: "smtp.gmail.com"
   port: 587
   mailTo: "florian.patzwall@gmail.com"
@@ -166,8 +166,8 @@ smtp:
 # timeseries database
 
 timeseries:
-  alarming: true
-  logging: true
+  alarming: false
+  logging: false
   refreshrate: 5
 
 db:
@@ -182,6 +182,6 @@ db:
 # slack
 
 slack:
-  enabled: true
-  api-key: "xoxb-637594900402-764424909765-va8LVXzFXlc2CW0ioyoxBEmA"
+  enabled: false
+  api-key: "REMOVED"
   channel: "#monitoring"
